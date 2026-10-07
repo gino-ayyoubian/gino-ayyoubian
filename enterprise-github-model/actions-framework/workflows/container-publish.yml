@@ -36,4 +36,10 @@ jobs:
           provenance: true
       - uses: sigstore/cosign-installer@v3
       - name: Sign image
-        run: cosign sign --yes "ghcr.io/${{ inputs.image-name }}@${{ steps.build.outputs.digest }}"
+        env:
+          IMAGE_TAGS: ${{ steps.meta.outputs.tags }}
+          IMAGE_DIGEST: ${{ steps.build.outputs.digest }}
+        run: |
+          IFS= read -r image_tag <<< "$IMAGE_TAGS"
+          image="${image_tag%:*}"
+          cosign sign --yes "${image}@${IMAGE_DIGEST}"
