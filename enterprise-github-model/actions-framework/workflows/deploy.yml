@@ -1,0 +1,27 @@
+name: deploy
+on:
+  workflow_call:
+    inputs:
+      environment: { type: string, required: true }
+      aws-role-arn: { type: string, required: true }
+      aws-region: { type: string, default: "us-east-1" }
+      deploy-command: { type: string, required: true }
+permissions:
+  contents: read
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    concurrency:
+      group: deploy-${{ inputs.environment }}
+      cancel-in-progress: false
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ inputs.aws-role-arn }}
+          aws-region: ${{ inputs.aws-region }}
+      - run: ${{ inputs.deploy-command }}

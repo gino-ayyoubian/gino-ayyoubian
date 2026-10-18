@@ -1,0 +1,33 @@
+name: security-scan
+on:
+  workflow_call:
+    inputs:
+      codeql-languages: { type: string, default: "javascript-typescript" }
+permissions:
+  contents: read
+jobs:
+  codeql:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: github/codeql-action/init@v3
+        with:
+          languages: ${{ inputs.codeql-languages }}
+      - uses: github/codeql-action/analyze@v3
+  dependency-review:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/dependency-review-action@v4
+  sbom:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: anchore/sbom-action@v0
+        with:
+          format: spdx-json
+          artifact-name: sbom.spdx.json

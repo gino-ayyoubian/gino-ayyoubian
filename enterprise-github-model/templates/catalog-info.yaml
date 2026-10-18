@@ -1,0 +1,10 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: REPLACE-ME
+  description: REPLACE-ME
+  tags: [tier-2]
+spec:
+  type: service # service | website | library | documentation
+  lifecycle: experimental
+  owner: group:REPLACE-ME

@@ -1,0 +1,20 @@
+name: ci
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  build:
+    uses: kkm-infra/actions/.github/workflows/build.yml@v1
+  test:
+    uses: kkm-infra/actions/.github/workflows/test.yml@v1
+  security:
+    uses: kkm-infra/actions/.github/workflows/security-scan.yml@v1
+    permissions:
+      contents: read
+      security-events: write
