@@ -1,13 +1,29 @@
 # Enterprise GitHub Model (KKM)
 
-Reference documentation and templates. Move `actions-framework/` to `kkm-infra/actions` and `templates/` to template repos once the organizations exist.
+This directory contains a **proposed reference model** for repository
+governance, architecture, metadata, and reusable GitHub Actions. It is not a
+statement that the proposed organizations, controls, or workflows are already
+deployed.
 
-- [01 Audit](01-audit.md)
-- [02 Target architecture](02-target-architecture.md)
-- [03 Governance](03-governance.md)
-- [04 Repository taxonomy](04-taxonomy.md)
-- [05 Roadmap](05-roadmap.md)
-- [templates/](templates) standard repo files
-- [actions-framework/](actions-framework) reusable workflows
+## Contents
 
-> Scope: built from public metadata only. The `KKM-International-Group` org was not visible, and no code, workflows, settings or secrets were inspected. Items marked *verify* are baselines, not observed findings.
+- [01 — Repository inventory and baseline](01-audit.md)
+- [02 — Target architecture](02-target-architecture.md)
+- [03 — Governance baseline](03-governance.md)
+- [04 — Repository taxonomy](04-taxonomy.md)
+- [05 — Adoption roadmap](05-roadmap.md)
+- [Repository templates](templates/)
+- [Reusable workflow examples](actions-framework/)
+
+## Using the examples
+
+Treat templates as starting points. Replace every placeholder, remove
+language-specific configuration that does not apply, and review permissions,
+ownership, secrets, and deployment assumptions before adoption. Reusable
+workflows must be published to a maintained repository and referenced by an
+immutable commit SHA before callers use them.
+
+The inventory is a dated snapshot of public repository metadata only. It does
+not cover private repositories or imply that repositories have been inspected
+for source code, secrets, workflows, or business ownership. See the limitations
+recorded in [the audit](01-audit.md).

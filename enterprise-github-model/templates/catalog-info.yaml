@@ -1,10 +1,10 @@
 apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
-  name: REPLACE-ME
-  description: REPLACE-ME
-  tags: [tier-2]
+  name: replace-with-unique-component-name
+  description: Replace with a concise, accurate purpose.
+  tags: [replace-with-domain-tag]
 spec:
   type: service # service | website | library | documentation
   lifecycle: experimental
-  owner: group:REPLACE-ME
+  owner: group:replace-with-existing-catalog-group

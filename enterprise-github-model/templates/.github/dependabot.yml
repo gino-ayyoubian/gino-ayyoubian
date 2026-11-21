@@ -1,5 +1,6 @@
 version: 2
 updates:
+  # Keep only package ecosystems used by the repository.
   - package-ecosystem: github-actions
     directory: /
     schedule: { interval: weekly }

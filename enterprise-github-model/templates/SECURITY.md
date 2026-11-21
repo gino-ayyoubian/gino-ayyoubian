@@ -1,3 +1,9 @@
-# Security Policy
+# Security policy
 
-Report vulnerabilities privately via GitHub Security Advisories. Do not open public issues. We acknowledge within 3 business days.
+Replace this template with the project's supported-version policy and a
+verified private reporting channel before publication.
+
+Do not report vulnerabilities in public issues or pull requests. Use GitHub's
+private vulnerability reporting feature when enabled, or contact
+`<security-contact>`. State a response-time commitment only if the maintainers
+can meet it.

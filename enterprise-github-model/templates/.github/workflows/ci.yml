@@ -3,18 +3,28 @@ on:
   pull_request:
   push:
     branches: [main]
+
 permissions:
   contents: read
+
 concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
+
+# Node.js example only. Publish the reusable workflows first, then replace
+# OWNER/REPOSITORY and REPLACE_WITH_COMMIT_SHA with the maintained repository
+# and its immutable commit SHA before adopting this template.
 jobs:
   build:
-    uses: kkm-infra/actions/.github/workflows/build.yml@v1
+    uses: OWNER/REPOSITORY/.github/workflows/build.yml@REPLACE_WITH_COMMIT_SHA
+    with:
+      node-version: "22"
   test:
-    uses: kkm-infra/actions/.github/workflows/test.yml@v1
+    uses: OWNER/REPOSITORY/.github/workflows/test.yml@REPLACE_WITH_COMMIT_SHA
+    with:
+      node-version: "22"
   security:
-    uses: kkm-infra/actions/.github/workflows/security-scan.yml@v1
+    uses: OWNER/REPOSITORY/.github/workflows/security-scan.yml@REPLACE_WITH_COMMIT_SHA
     permissions:
       contents: read
       security-events: write
