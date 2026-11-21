@@ -17,13 +17,16 @@ class CheckDocsTests(unittest.TestCase):
     def test_rejects_broken_and_empty_links(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
-            (root / "README.md").write_text("[Missing](missing.md) [Empty](#)\n", encoding="utf-8")
+            (root / "README.md").write_text(
+                "[Missing](missing.md) [Empty](#) [No target]() [Whitespace]( )\n",
+                encoding="utf-8",
+            )
 
             errors = check_links(root)
 
-            self.assertEqual(len(errors), 2)
+            self.assertEqual(len(errors), 4)
             self.assertIn("unresolved local link", errors[0])
-            self.assertIn("empty link target", errors[1])
+            self.assertTrue(all("empty link target" in error for error in errors[1:]))
 
     def test_rejects_links_outside_repository(self):
         with tempfile.TemporaryDirectory() as directory:

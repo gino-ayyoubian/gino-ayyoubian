@@ -9,7 +9,7 @@ from pathlib import Path
 from urllib.parse import unquote, urlsplit
 
 
-LINK = re.compile(r"(?<!!)\[[^\]]*\]\(([^)]+)\)")
+LINK = re.compile(r"(?<!!)\[[^\]]*\]\(([^)]*)\)")
 INLINE_CODE = re.compile(r"`[^`]*`")
 
 
@@ -37,7 +37,8 @@ def check_links(root: Path) -> list[str]:
             continue
         for line_number, line in markdown_lines(markdown):
             for match in LINK.finditer(line):
-                target = match.group(1).strip().split(maxsplit=1)[0].strip("<>")
+                tokens = match.group(1).strip().split(maxsplit=1)
+                target = tokens[0].strip("<>") if tokens else ""
                 if not target or target == "#":
                     errors.append(f"{markdown.relative_to(root)}:{line_number}: empty link target")
                     continue
