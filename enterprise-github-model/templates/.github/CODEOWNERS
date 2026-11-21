@@ -1,2 +1,3 @@
+# Replace both examples with existing GitHub users or teams before adopting.
 * @REPLACE-ORG/REPLACE-TEAM
 /.github/ @REPLACE-ORG/platform-admins

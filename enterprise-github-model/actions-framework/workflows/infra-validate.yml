@@ -12,13 +12,13 @@ jobs:
       run:
         working-directory: ${{ inputs.working-directory }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: opentofu/setup-opentofu@v1
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: opentofu/setup-opentofu@9d84900f3238fab8cd84ce47d658d25dd008be2f
       - run: tofu fmt -check -recursive
       - run: tofu init -backend=false
       - run: tofu validate
-      - uses: terraform-linters/setup-tflint@v4
+      - uses: terraform-linters/setup-tflint@90f302c255ef959cbfb4bd10581afecdb7ece3e6
       - run: tflint --recursive
-      - uses: bridgecrewio/checkov-action@v12
+      - uses: bridgecrewio/checkov-action@b17b606d6ec72bb8ba5721ad5b7e340b80a9fc39
         with:
           directory: ${{ inputs.working-directory }}

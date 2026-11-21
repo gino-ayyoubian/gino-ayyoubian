@@ -5,7 +5,7 @@ on:
       environment: { type: string, required: true }
       aws-role-arn: { type: string, required: true }
       aws-region: { type: string, default: "us-east-1" }
-      deploy-command: { type: string, required: true }
+      deploy-script: { type: string, required: true }
 permissions:
   contents: read
 jobs:
@@ -19,9 +19,34 @@ jobs:
       contents: read
       id-token: write
     steps:
-      - uses: actions/checkout@v4
-      - uses: aws-actions/configure-aws-credentials@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: aws-actions/configure-aws-credentials@7474bc4690e29a8392af63c5b98e7449536d5c3a
         with:
           role-to-assume: ${{ inputs.aws-role-arn }}
           aws-region: ${{ inputs.aws-region }}
-      - run: ${{ inputs.deploy-command }}
+      - name: Validate deployment script path
+        id: deployment-script
+        env:
+          DEPLOY_SCRIPT: ${{ inputs.deploy-script }}
+        run: |
+          case "$DEPLOY_SCRIPT" in
+            ""|/*|..|../*|*/..|*/../*|*[!A-Za-z0-9._/-]*)
+              echo "deploy-script must be a simple repository-relative path without parent traversal" >&2
+              exit 1
+              ;;
+          esac
+          workspace="$(realpath -e -- "$GITHUB_WORKSPACE")"
+          script="$(realpath -e -- "$workspace/$DEPLOY_SCRIPT")"
+          case "$script" in
+            "$workspace"/*) ;;
+            *)
+              echo "deploy-script must resolve inside the checked-out repository" >&2
+              exit 1
+              ;;
+          esac
+          test -f "$script"
+          echo "path=$script" >> "$GITHUB_OUTPUT"
+      - name: Run deployment script
+        env:
+          DEPLOY_SCRIPT: ${{ steps.deployment-script.outputs.path }}
+        run: bash "$DEPLOY_SCRIPT"
